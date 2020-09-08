@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <!-- 引入样式 409EFF  -- 9e7cfd  -->
+    <link rel="stylesheet" href="__STATIC__/css/reset.css">
+    <link rel="stylesheet" href="__STATIC__/css/theme-chalk.css">
+    <link rel="stylesheet" href="__STATIC__/css/elementui.css">
+    <link rel="stylesheet" href="__STATIC__/css/index.css">
+    <link rel="stylesheet" href="__STATIC__/css/alifont.css">
+    <!--<link rel="stylesheet" href="//at.alicdn.com/t/font_1532597_0063b9tethtlk.css">-->
+</head>
+<body>
+<div id="app" v-cloak>
+<!--<h1>我是控制台<a href="#" @click="loginout">退出</a></h1>-->
+
+    <div class="headbox">
+        <div class="lefthead">
+            <div class="logo">
+                TIMER 时间管理
+            </div>
+            <div class="menulist">
+                <ul>
+                    <li class="hover">
+                        <a href="#">时间管理</a>
+                    </li>
+                    <li>
+                        <a href="#">我的博客</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="righthead">
+            <div class="name">
+                <div class="mainmenu">
+                    <el-avatar> {$name}  </el-avatar>
+                    <b>VIP</b>
+                    <em>{$name}</em>
+                    <i class="iconfont icon-xiala"></i>
+                </div>
+                 <div class="limenu">
+                     <div><a href="#">账号设置</a></div>
+                     <div>
+                         <a href="#">官方贴吧</a>
+                         <a href="#">帮助中心</a>
+                     </div>
+                     <div><a href="#" @click="loginout">退出登录</a></div>
+                 </div>
+            </div>
+            <div class="indexurl">
+                <a href="#">官网</a>
+            </div>
+            <div class="app">
+                <a href="#">下载客户端</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="contentbox">
+        <div class="menuleftbox">
+            <div class="topbtn">
+                <h4  @click="dialogVisible = true"><i class="iconfont icon-xinzeng"></i><span>新建</span></h4>
+            </div>
+            <div class="runing">
+                <h5 @click="run=!run" :class="run?'':'hover'"><i class="iconfont icon-jinhangzhong"></i><b>正在进行中</b>  <i class="iconfont icon-sanjiao righticon"></i></h5>
+                <div class="listbox" v-show="run">
+                    <p v-for="runlist in projectlist.run" :key="runlist.id" :class="runlist.hover ? 'hover': ''" @click="clickthisrun(runlist.id)">
+                        <b>{{runlist.title}}</b> <em>({{runlist.taskNum>0? runlist.taskNum : 0}})</em> <s></s>
+                    </p>
+                </div>
+            </div>
+            <div class="ending">
+                <h5  @click="end=!end"  :class="end?'':'hover'"><i class="iconfont icon-trues"></i><b>已完成</b>  <i class="iconfont icon-sanjiao righticon"></i></h5>
+                <div class="listbox" v-show="end">
+                    <p v-for="runlist in projectlist.end"  :key="runlist.id" :class="runlist.hover ? 'hover': ''" @click="clickthisend(runlist.id)">
+                        <b>{{runlist.title}}</b> <em>({{runlist.taskNum>0? runlist.taskNum : 0}})</em> <s></s>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="menusecondbox">
+            <div class="title">
+                <h2 v-for="current in projectlistdata" v-if="current.hover">{{current.title}} <b>({{current.taskNum>0? current.taskNum : 0}})</b></h2>
+            </div>
+            <div class="textinput">
+                <el-input v-model="newTaskName" placeholder="回车添加任务"  @keyup.enter.native="addnewtask"> </el-input>
+            </div>
+            <div class="contentlist">   <!--@click="task.status==1?task.status=0:task.status=1"-->
+                <div class="onelist" v-for="task in tasklist" :key="task.id" :class=" task.hover ? 'hover':''"  @click="clickthistask(task.id)">
+                    <el-checkbox  v-model="task.status" @change="statusTask(task)"> {{task.taskName}} </el-checkbox>
+                    <div class="morebtn">
+                        <i class="iconfont icon-gengduo"></i>
+                        <div class="morebox">
+                            <p @click="deleteTask(task.id)">删除任务</p>
+                           <!-- <p>排优先级</p>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contentrightbox">
+            <div class="contentdetail"  v-if="Object.keys(currentTask).length>0">
+                <div class="contenttitle">
+                    <el-input v-model="currentTask.taskName" placeholder="请输入内容" maxlength="20"  show-word-limit  > </el-input>
+                </div>
+
+                <div class="contentbtnlist" >
+                    <em @click="editTask">保存</em>
+                </div>
+
+                <div class="contentdetailbox">
+                    <el-input
+                            type="textarea"
+                            maxlength="500"
+                            show-word-limit
+                            :autosize="{ minRows: 5, maxRows: 6}"
+                            placeholder="请输入内容"
+                            v-model="currentTask.taskContent">
+                    </el-input>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <el-dialog
+            title="新建"
+            :visible.sync="dialogVisible"
+            width="30%">
+        <el-input v-model="newProjectName" placeholder="请输入内容" maxlength="10"  show-word-limit> </el-input>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="commitProjectName">确 定</el-button>
+          </span>
+    </el-dialog>
+
+</div>
+<!-- import Vue before Element -->
+<script src="__STATIC__/js/vue.js"></script>
+<script src="__STATIC__/js/element-ui2.13.2.js"></script>
+<script src="__STATIC__/js/axios0.19.2.js"></script>
+<script src="__STATIC__/js/vue-router3.3.4.js"></script>
+
+<!--
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+-->
+
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                newProjectName:"",
+                projectlist:{run:[],end:[]},
+                projectId:null,
+                currentProject:{},
+                tasklist:{},
+                newTaskName:"",
+                currentTask:{},
+
+                currentDate: new Date(),
+                visible: false,
+                dialogVisible:false,
+                active:'',
+                run:true,
+                end:true,
+                input:'2019-12-09',
+                textarea2:'',
+            }
+        },
+        created(){
+            this.initfun();
+        },
+        computed:{
+            projectlistdata(){
+                return  [...this.projectlist.run,...this.projectlist.end];
+            }
+        },
+        methods:{
+            //初始化获取项目列表 ，默认第一个项目
+            initfun(){
+                _this = this;
+                axios.post('/index.php/index/index/queryproject', {status:0})
+                    .then(function (response) {
+                        if(response.data.success){
+                            _this.projectlist.run = response.data.data;
+                            var idlist = [];
+                            _this.projectlist.run.forEach((item)=>{
+                                item.hover = false;
+                                idlist.push(item.id);
+                            });
+                           // console.log(_this.projectId);
+                            if(_this.projectId===null){
+                                console.log('new');
+                                _this.projectId =  _this.projectlist.run[0].id;
+                                _this.projectlist.run[0].hover = true;
+                                _this.gettasklist( _this.projectlist.run[0].id);
+                            }else if(idlist.indexOf(_this.projectId)!==-1){
+                                console.log('add');
+                                _this.projectlist.run.forEach((item)=>{
+                                    if(item.id === _this.projectId){
+                                        item.hover = true;
+                                    }
+                                });
+                                _this.gettasklist( _this.projectId);
+                            }else{
+                                console.log('null');
+                                _this.gettasklist( _this.projectId);
+                            }
+
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+                axios.post('/index.php/index/index/queryproject', {status:1})
+                    .then(function (response) {
+                        if(response.data.success){
+                            _this.projectlist.end = response.data.data;
+                            var idlistend = [];
+                            _this.projectlist.end.forEach((item) => {
+                                item.hover = false;
+                                idlistend.push(item.id);
+                            });
+                          //  console.warn(idlistend.indexOf(_this.projectId));
+                            if(_this.projectId===null) {
+
+                            }else if(idlistend.indexOf(_this.projectId)!==-1){
+                                _this.projectlist.end.forEach((item)=>{
+                                    if(item.id === _this.projectId){
+                                        item.hover = true;
+                                    }
+                                });
+                                _this.gettasklist( _this.projectId);
+                            }else{
+                                _this.gettasklist( _this.projectId);
+                            }
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            //根据项目ID获取任务列表，默认第一个任务
+            gettasklist(id){
+               // console.log('taskid:'+id);
+                var _this = this;
+                axios.post('/index.php/index/index/querytasklist', {projectId:id})
+                    .then(function (response) {
+                        if(response.data.success){
+                            if(response.data.data.length>0){
+                                _this.tasklist = response.data.data;
+                                _this.tasklist.forEach((item)=>{
+                                    item.hover = false;
+                                    if(item.status===1){
+                                        item.status = true;
+                                    }else{
+                                        item.status = false;
+                                    }
+                                });
+                                _this.currentTask = _this.tasklist[0];
+                                _this.tasklist[0].hover = true;
+
+                            }else{
+                                _this.tasklist = [];
+                                _this.currentTask ={};
+                            }
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            //退出登录
+            loginout(){
+                var _this = this;
+                axios.get('/index.php/index/index/loginout', {})
+                    .then(function (response) {
+                        if(response.data.success){
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'success'
+                            });
+                            setTimeout(()=>{
+                                window.location.href = '/index.php/index/index/login';
+                            },1000);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            //选择项目
+            clickthisrun(id){
+                var _this = this;
+                this.run = false;
+                //console.log(id);
+                for(var i in this.projectlist.run){
+                    _this.projectlist.run[i].hover = false;
+                    _this.$set(this.projectlist.run[i],'hover',false);
+                    if(this.projectlist.run[i].id===id){
+                        _this.projectlist.run[i].hover = true;
+                        _this.$set(this.projectlist.run[i],'hover',true);
+                        _this.gettasklist(this.projectlist.run[i].id);
+                        _this.projectId =  _this.projectlist.run[i].id;
+                    }
+                }
+                for(var i in this.projectlist.end){
+                    _this.projectlist.end[i].hover = false;
+                    _this.$set(this.projectlist.end[i],'hover',false);
+                }
+                this.run = true;
+            },
+            //选择项目
+            clickthisend(id){
+                this.end = false;
+                for(var i in this.projectlist.run){
+                    this.projectlist.run[i].hover = false;
+                }
+                for(var i in this.projectlist.end){
+                    this.projectlist.end[i].hover = false;
+                    if(this.projectlist.end[i].id===id){
+                        this.projectlist.end[i].hover = true;
+                        this.gettasklist(this.projectlist.end[i].id);
+                        this.projectId =  this.projectlist.end[i].id;
+                    }
+                }
+                this.end = true;
+            },
+            //选择任务
+            clickthistask(id){
+                for(var i in this.tasklist){
+                    this.tasklist[i].hover = false;
+                    if(this.tasklist[i].id===id){
+                        this.tasklist[i].hover = true;
+                        this.currentTask = this.tasklist[i];
+                    }
+                }
+            },
+            //新增项目名称
+            commitProjectName(){
+                var _this = this;
+                axios.post('/index.php/index/index/addProject', {'title':_this.newProjectName},{
+                    headers:{'Content-Type':'application/json;charset=utf8'}
+                })
+                    .then(function (response) {
+                        if(response.data.success){
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'success'
+                            });
+                            _this.projectId = parseInt(response.data.data);
+                            _this.newProjectName = '';
+                            _this.dialogVisible = false;
+                            _this.initfun();
+                        }else{
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            //新建任务
+            addnewtask(){
+                var _this = this;
+               // console.log(_this.currentTask.projectId?_this.currentTask.projectId : _this.projectId);
+                axios.post('/index.php/index/index/addTask', {'taskName':_this.newTaskName,'projectId': _this.projectId},{
+                    headers:{'Content-Type':'application/json;charset=utf8'}
+                })
+                    .then(function (response) {
+                        if(response.data.success){
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'success'
+                            });
+                            _this.newTaskName = '';
+                            _this.initfun();
+                        }else{
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            //编辑任务
+            editTask(){
+                var _this = this;
+                axios.post('/index.php/index/index/addTaskcontent', {'id':_this.currentTask.id,'taskName':_this.currentTask.taskName,'taskContent':_this.currentTask.taskContent},{
+                    headers:{'Content-Type':'application/json;charset=utf8'}
+                })
+                    .then(function (response) {
+                        if(response.data.success){
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'success'
+                            });
+                        }else{
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            //删除任务
+            deleteTask(id){
+                var _this = this;
+                axios.post('/index.php/index/index/deleteTask', {'id':id,},{
+                    headers:{'Content-Type':'application/json;charset=utf8'}
+                })
+                    .then(function (response) {
+                        if(response.data.success){
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'success'
+                            });
+                            _this.initfun();
+                        }else{
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            //修改任务的状态
+            statusTask(task){
+                var _this = this;
+                console.log(task);
+                axios.post('/index.php/index/index/statusTask', {'id':task.id,'status':task.status},{
+                    headers:{'Content-Type':'application/json;charset=utf8'}
+                })
+                    .then(function (response) {
+                        if(response.data.success){
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'success'
+                            });
+                            _this.initfun();
+                        }else{
+                            _this.$message({
+                                message: response.data.msg,
+                                type: 'error'
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+        }
+    })
+
+</script>
+</body>
+</html>
