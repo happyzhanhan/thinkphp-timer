@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>列表</title>
+    <link rel="stylesheet" href="__STATIC__/css/reset.css">
+    <link rel="stylesheet" href="__STATIC__/css/theme-chalk.css">
+    <link rel="stylesheet" href="__STATIC__/css/elementui.css">
+    <link rel="stylesheet" href="__STATIC__/css/index.css">
+    <link rel="stylesheet" href="__STATIC__/css/alifont.css">
+    <style>
+        .topbutton{
+            padding: 20px;
+            text-align: right;
+        }
+        .tablebox{
+            padding:40px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+
+    <div class="topbutton">
+        <el-button type="primary" @click="addone">新增</el-button>
+    </div>
+    <div class="tablebox">
+        <el-table
+                :data="tablelist"
+                style="width: 100%">
+            <el-table-column
+                    prop="res"
+                    label="物品名称"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="type"
+                    label="物品类型"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="img"
+                    label="图片">
+                <template slot-scope="scope">
+                    <div v-for="img in returnlist(scope.row.img)">
+                        <div class="demo-image__preview">
+                            <el-image
+                                    style="width: 100px; height: 100px"
+                                    :src="img"
+                                    :preview-src-list="returnlist(scope.row.img)">
+                            </el-image>
+                        </div>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="expireDate"
+                    sortable
+                    label="过期时间">
+            </el-table-column>
+            <el-table-column
+                    prop="remarks"
+                    label="备注">
+            </el-table-column>
+        </el-table>
+    </div>
+
+
+</div>
+
+</body>
+<script src="__STATIC__/js/vue.js"></script>
+<script src="__STATIC__/js/element-ui2.13.2.js"></script>
+<script src="__STATIC__/js/axios0.19.2.js"></script>
+<script src="__STATIC__/js/vue-router3.3.4.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+               tablelist:[],
+            }
+        },
+        created(){
+            this.getInit();
+        },
+        methods: {
+            getInit() {
+                var _this = this;
+                axios.post('/index.php/index/Apppage/querydata', {},{
+                    headers:{'Content-Type':'application/json;charset=utf8'}
+                })
+                    .then(function (response) {
+                        _this.tablelist = response.data.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            returnlist(data){
+                let list = data.split(',');
+
+                list.forEach((url,i)=>{
+                    list[i] = document.location.protocol +'//'+ window.document.location.hostname +'/'+ url;
+                });
+                return list;
+            },
+            addone(){
+                window.open('/index.php/index/apppage/index.html','_self');
+            },
+
+        }
+    })
+</script>
+</html>

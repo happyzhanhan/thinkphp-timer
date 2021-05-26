@@ -51,13 +51,15 @@ function addimg($pic,$url){
         foreach($pic as $file){
             // 'img' . DS . 'goodsimg'
             // 移动到框架应用根目录/public/uploads/ 目录下
-            $info = $file->validate(['size'=> 1024 * 1000 ,'ext'=>'jpg,png,gif'])->move(ROOT_PATH . 'public'. DS .$url);
+            $info = $file->validate(['size'=> 1024 * 1000 ,'ext'=>'jpeg,jpg,png,gif'])->move(ROOT_PATH . 'public'. DS .$url);
             $data[] = str_replace('\\', '/',$url . '/' . $info->getSaveName());
         }
 
         return implode(',',$data);
+
     } elseif (is_object($pic)) {
-        $info = $pic->validate(['size'=> 1024 * 1000 ,'ext'=>'jpg,png,gif'])->move(ROOT_PATH . 'public'. DS . $url);
+
+        $info = $pic->validate(['size'=> 1024 * 1000 ,'ext'=>'jpeg,jpg,png,gif'])->move(ROOT_PATH . 'public'. DS . $url);
         if($info){
             //返回文件位置信息 如：20180620/42a79759f284b767dfcb2a0197904287.jpg
             return  str_replace('\\', '/',$url . '/' . $info->getSaveName());
