@@ -24,6 +24,8 @@
 
     <div class="topbutton">
         <el-button type="primary" @click="addone">新增</el-button>
+
+        <el-button @click="toLogin">登录</el-button>
     </div>
     <div class="tablebox">
         <el-table
@@ -63,6 +65,16 @@
                     prop="remarks"
                     label="备注">
             </el-table-column>
+
+            <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="200">
+                <template slot-scope="scope">
+                    <el-button @click="handleClick(scope.row)" type="primary" size="small">编辑</el-button>
+                    <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
+                </template>
+            </el-table-column>
         </el-table>
     </div>
 
@@ -87,6 +99,7 @@
             this.getInit();
         },
         methods: {
+            //列表查询
             getInit() {
                 var _this = this;
                 axios.post('/index.php/index/Apppage/querydata', {},{
@@ -103,12 +116,35 @@
                 let list = data.split(',');
 
                 list.forEach((url,i)=>{
-                    list[i] = document.location.protocol +'//'+ window.document.location.hostname +'/'+ url;
+                    list[i] = document.location.protocol +'//'+ window.document.location.hostname +':'+document.location.port +'/'+ url;
                 });
                 return list;
             },
             addone(){
                 window.open('/index.php/index/apppage/index.html','_self');
+            },
+            toLogin(){
+                window.open('/index.php/index/index/login.html','_self');
+            },
+            //删除
+            handleDelete(row){
+                var _this = this;
+                axios.post('/index.php/index/Apppage/deleteTask', {id:row.id},{
+                    headers:{'Content-Type':'application/json;charset=utf8'}
+                })
+                    .then(function (response) {
+                        console.log(response.data.msg);
+                        _this.$message({message: response.data.msg,type: 'success'});
+                        _this.getInit();
+                    })
+                    .catch(function (error) {
+                        _this.$message({message: error.data.msg,type: 'error'});
+                        console.log(error);
+                    });
+            },
+            //编辑
+            handleClick(row){
+                window.open('/index.php/index/Apppage/index.html?id='+row.id,'_self');
             },
 
         }

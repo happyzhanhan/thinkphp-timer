@@ -30,7 +30,42 @@
 
         <el-form-item label="图片">
 
+            <div class="" v-for="one in oldList" v-if="oldList.length>0" style="float: left;">
+                <div>
+                    <img :src=" returnUrl(one)" alt="" style="width: 146px; height: 146px; border:1px solid #ddd;margin-right: 10px;">
+                     <span class="el-upload-list__item-actions">
+                        <span
+                                class="el-upload-list__item-preview"
+                                @click="handlePictureCardPreview(file)"
+                        >
+                          <i class="el-icon-zoom-in"></i>
+                        </span>
+                        <span
+                                v-if="!disabled"
+                                class="el-upload-list__item-delete"
+                                @click="handleDownload(file)"
+                        >
+                          <i class="el-icon-download"></i>
+                        </span>
+                        <span
+                                v-if="!disabled"
+                                class="el-upload-list__item-delete"
+                                @click="handleRemove(file)"
+                        >
+                          <i class="el-icon-delete"></i>
+                        </span>
+                      </span>
+                </div>
+
+                <!--<el-image
+                        style="width: 100px; height: 100px"
+                        :src="document.location.protocol +'//'+ window.document.location.hostname +':'+document.location.port +'/'+ one"
+                        :preview-src-list="[document.location.protocol +'//'+ window.document.location.hostname +':'+document.location.port +'/'+ one]">
+                </el-image>-->
+            </div>
+
             <el-upload
+                    style="float: left;margin-left:20px;"
                     action="/index.php/index/Apppage/addimg"
                     list-type="picture-card"
                     :file-list="fileList"
@@ -75,6 +110,7 @@
         data: function() {
             return {
                 form: {
+                    id:null,
                     name: "",
                     type: 1,
                     img:[],
@@ -83,38 +119,100 @@
 
                 },
 
+                oldList:[],
+
                 dialogImageUrl: '',
                 dialogVisible: false,
                 fileList:[],
             }
         },
+        mounted(){
+            this.selectOne();
+        },
         methods: {
+
+            //单个查询
+            selectOne(){
+                console.log(window.location.href.split("="));
+                let data = window.location.href.split("=");
+                let id = data[1];
+                if(id){
+                    var _this = this;
+                    axios.post('/index.php/index/Apppage/selectOnedata', {id:id},{
+                        headers:{'Content-Type':'application/json;charset=utf8'}
+                    })
+                        .then(function (response) {
+                            console.log(response.data.data[0]);
+                            let one = response.data.data[0];
+                            _this.form = {
+                                id:one.id,
+                                name: one.res,
+                                type: one.type,
+                                img:[],
+                                expireDate:one.expireDate,
+                                remarks:one.remarks,
+                            };
+                            _this.form.img.push(...one.img.split(','));
+                            _this.oldList = one.img.split(',');
+                        })
+                        .catch(function (error) {
+                            _this.$message({message: error,type: 'error'});
+                            console.log(error);
+                        });
+                }
+
+            },
+            //新增按钮
             onSubmit() {
                 console.log('submit!',this.form);
-
-
-
                 var _this = this;
-                axios.post('/index.php/index/Apppage/addonedata', JSON.parse(JSON.stringify(this.form)),{
-                    headers:{'Content-Type':'application/json;charset=utf8'}
-                })
-                .then(function (response) {
-                    if(response.data.success){
-                        _this.$message({message: response.data.msg,type: 'success'});
-                        window.open('/index.php/index/apppage/showlist.html','_self');
-                    }else{
-                        _this.$message({message: response.data.msg,type: 'error'});
-                    }
+                if(!this.form.id){
+                    axios.post('/index.php/index/Apppage/addonedata', JSON.parse(JSON.stringify(this.form)),{
+                        headers:{'Content-Type':'application/json;charset=utf8'}
+                    })
+                        .then(function (response) {
+                            if(response.data.success){
+                                _this.$message({message: response.data.msg,type: 'success'});
+                                window.open('/index.php/index/apppage/showlist.html','_self');
+                            }else{
+                                _this.$message({message: response.data.msg,type: 'error'});
+                            }
 
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }else{
+                    console.log(this.form);
+                    axios.post('/index.php/index/Apppage/editonedata', JSON.parse(JSON.stringify(this.form)),{
+                        headers:{'Content-Type':'application/json;charset=utf8'}
+                    })
+                        .then(function (response) {
+                            if(response.data.success){
+                                _this.$message({message: response.data.msg,type: 'success'});
+                                window.open('/index.php/index/apppage/showlist.html','_self');
+                            }else{
+                                _this.$message({message: response.data.msg,type: 'error'});
+                            }
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+
+
+
+
             },
             backlist(){
                 window.open('/index.php/index/apppage/showlist.html','_self');
             },
+            returnUrl(url){
+                return document.location.protocol +'//'+ window.document.location.hostname +':'+document.location.port +'/'+ url;
+            },
 
+            //图片上传
 
             handleRemove(file, fileList) {
                 console.log(file, fileList);
@@ -124,7 +222,13 @@
                 this.dialogVisible = true;
             },
             handleAvatarSuccess(res,file){
-                this.form.img.push(res.data);
+                if(res.code){
+                    this.form.img.push(res.data);
+                }else{
+                    this.$message({message: res.data.msg,type: 'error'});
+                }
+
+
             },
 
         }
