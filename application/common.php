@@ -83,6 +83,24 @@ function jsonData($code = 1, $msg = '', $data = [])
     $codeV = ['error','success'];
     return json_encode(['code' => $codeV[$code],'msg'=>$msg,'data'=>$data],JSON_UNESCAPED_UNICODE);
 }
+function truedata( $code = 1,$data = [])
+{
+    //code 0代表成功 1代表失败
+    $success =[true,false];
+    return json_encode(['success' => $success[$code],'lang'=>'zh-cn'],JSON_UNESCAPED_UNICODE);
+}
+function truedata2( $code = 1,$data = [])
+{
+    //code 0代表成功 1代表失败
+    $success =[true,false];
+    return json_encode(['success' => $success[$code],'lang'=>'zh-cn'],JSON_UNESCAPED_UNICODE);
+}
+function truedata3( $code = 1,$data = [])
+{
+    //code 0代表成功 1代表失败
+    $success =[true,false];
+    return json_encode(['success' => $success[$code],'name'=>'','logourl'=>''],JSON_UNESCAPED_UNICODE);
+}
 /*
  * 获取用户IP
  * */

@@ -1,0 +1,321 @@
+.headbox{
+    width:100%;
+    height:70px;
+    background: #9e7cfd;
+    color:#fff;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+}
+[v-cloak] {
+    display: none;
+}
+.headbox a{
+    text-decoration: none;
+    color:#fff;
+}
+.headbox a:hover{
+    text-decoration: underline;
+}
+.lefthead{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+}
+.logo{
+    width:258px;
+    box-sizing: border-box;
+    padding:0 20px;
+    text-align: center;
+    font-size: 22px;
+}
+.menulist{
+    height:70px;
+}
+.menulist ul{
+    display: flex;
+    height:100%;
+    flex-direction: row;
+    align-items: center;
+}
+.menulist ul li{
+    padding:0 20px;
+    height:100%;
+    line-height: 70px;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+.menulist ul li:hover,.menulist ul li.hover{
+    background: #8a71d2;
+}
+.menulist ul li:hover a{
+    text-decoration: none;
+}
+.righthead{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+}
+.app,.indexurl,.name{
+    padding:0 20px;
+    text-align: center;
+}
+.name{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.name b,.name em{
+    margin:0 5px;
+}
+.indexurl{
+    position: relative;
+}
+.indexurl:before{
+    position: absolute;
+    left:0;
+    top:-2px;
+    content:"";
+    width: 2px;
+    height:20px;
+    background: #fff;
+}
+.app{
+    position: relative;
+}
+.app:before{
+    position: absolute;
+    left:0;
+    top:-2px;
+    content:"";
+    width: 2px;
+    height:20px;
+    background: #fff;
+}
+
+.name{
+    position: relative;
+    cursor: pointer;
+    height:70px;
+}
+.mainmenu{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.mainmenu i{
+    transition: all 0.5s;
+}
+.limenu{
+    position: absolute;
+    top:70px;
+    z-index: 9;
+    display: none;
+    width: 160px;
+    box-sizing: border-box;
+    background: #fff;
+    border:1px solid #eee;
+    box-shadow: 4px 2px 2px #eee;
+    text-align: center;
+    transition: all 0.2s;
+    opacity: 0;
+}
+.limenu div{
+    border-bottom:1px solid #ddd;
+}
+.limenu div:last-child{
+    border:none;
+}
+.limenu a{
+    font-size: 14px;
+    width: 100%;
+    color:#999;
+    line-height: 40px;
+    display: inline-block;
+    text-align: center;
+}
+.name:hover i{
+    transform: rotate(180deg);
+}
+.name:hover .limenu{
+    display: block;
+    opacity: 1;
+}
+
+
+
+.contentbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height:100%;
+}
+.contentbox .menuleftbox{
+    width: 14%;
+    height:94vh;
+    border-right:1px solid #ddd;
+    background: #f1f1f1;
+}
+
+
+.topbtn{
+    padding:10px 20px;
+    font-size: 14px;
+    line-height: 40px;
+}
+.topbtn h4{
+    cursor: pointer;
+}
+.topbtn span{
+    margin-left:20px;
+    color:#333;
+}
+.runing,.ending{
+    border-top:1px solid #ddd;
+    color:#666;
+    line-height: 40px;
+    padding:5px 20px;
+}
+.runing h5,.ending h5{
+    font-size: 14px;
+    line-height: 40px;
+    color:#999;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    cursor: pointer;
+}
+.righticon{
+    font-size: 6px!important;
+    color:#ddd;
+    transform: rotate(90deg);
+    transition: all 0.3s;
+}
+.runing h5.hover .righticon,.ending h5.hover .righticon{
+    transform: rotate(0deg);
+}
+.runing h5 b,.ending h5 b{
+    width: 70%;
+    text-align: left;
+}
+.runing p,.ending p{
+   color:#333;
+    padding-left:20px;
+    cursor: pointer;
+    margin-bottom:5px;
+}
+.runing p:hover,.ending p:hover,.runing p.hover,.ending p.hover{
+    background: #dbceff;
+    border-radius: 5px;
+}
+
+.menusecondbox{
+    width: 36%;
+    border-right:1px solid #ddd;
+}
+.menusecondbox .title{
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.menusecondbox .title h2{
+    font-size: 20px;
+    line-height: 30px;
+    color:#000;
+}
+.textinput{
+    padding: 0 30px 0 20px;
+    box-sizing: border-box;
+}
+.textinput input{
+    width: 100%;
+    height:30px;
+    font-size: 16px;
+    line-height: 30px;
+    border: 1px solid #9e7cfd;
+    text-indent:20px;
+    outline-color: #8a71d2;
+    border-radius: 3px;
+}
+.onelist{
+    cursor: pointer;
+    position: relative;
+    margin:20px 30px 20px 20px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 30px;
+    border-bottom: 1px dashed #ddd;
+    border-radius: 5px;
+}
+.onelist:hover,.onelist.hover{
+    background: #dbceff;
+}
+
+.onelist:hover .morebtn{
+    opacity: 1;
+}
+.onelist .morebtn{
+    position: absolute;
+    z-index: 2;
+    top:0;
+    right: -18px;
+    opacity: 0;
+    float: right;
+    color: #999;
+    cursor: pointer;
+}
+.onelist .morebtn .morebox{
+    opacity: 0;
+    position: absolute;
+    top:30px;
+    z-index: 3;
+    width: 100px;
+    padding: 10px 0;
+    line-height: 30px;
+    border:1px solid #ddd;
+    box-shadow: 5px 3px 2px #eee;
+    background: #fff;
+    transition: all 0.3s;
+}
+.onelist .morebtn:hover .morebox{
+    opacity: 1;
+}
+.onelist .morebtn .morebox p{
+    text-align: center;
+}
+.onelist .morebtn .morebox p:hover{
+    color:#9e7cfd;
+}
+
+.contentrightbox{
+    width: 50%;
+}
+.contentdetailbox,.contenttitle{
+    padding:10px 30px;
+    box-sizing: border-box;
+}
+
+.contentrightbox input{
+    outline-color:#9e7cfd;
+}
+.contentbtnlist{
+    line-height: 50px;
+    background: #eee;
+    width: 100%;
+    height: 50px;
+    display: block;
+    padding: 0 30px;
+    box-sizing: border-box;
+}
+.contentbtnlist em{
+    float: right;
+    color:#999;
+    cursor: pointer;
+}
+.contentbtnlist em:hover{
+    color: #9e7cfd;
+}
