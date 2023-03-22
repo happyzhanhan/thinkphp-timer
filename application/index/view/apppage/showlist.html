@@ -89,7 +89,7 @@
         methods: {
             getInit() {
                 var _this = this;
-                axios.post('/index.php/index/Apppage/querydata', {},{
+                axios.post('/index/Apppage/querydata', {},{
                     headers:{'Content-Type':'application/json;charset=utf8'}
                 })
                     .then(function (response) {
@@ -108,7 +108,7 @@
                 return list;
             },
             addone(){
-                window.open('/index.php/index/apppage/index.html','_self');
+                window.open('/index/apppage/index.html','_self');
             },
 
         }

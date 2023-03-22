@@ -182,7 +182,7 @@
             //初始化获取项目列表 ，默认第一个项目
             initfun(){
                 _this = this;
-                axios.post('/index.php/index/index/queryproject', {status:0})
+                axios.post('/index/index/queryproject', {status:0})
                     .then(function (response) {
                         if(response.data.success){
                             _this.projectlist.run = response.data.data;
@@ -216,7 +216,7 @@
                         console.log(error);
                     });
 
-                axios.post('/index.php/index/index/queryproject', {status:1})
+                axios.post('/index/index/queryproject', {status:1})
                     .then(function (response) {
                         if(response.data.success){
                             _this.projectlist.end = response.data.data;
@@ -248,7 +248,7 @@
             gettasklist(id){
                // console.log('taskid:'+id);
                 var _this = this;
-                axios.post('/index.php/index/index/querytasklist', {projectId:id})
+                axios.post('/index/index/querytasklist', {projectId:id})
                     .then(function (response) {
                         if(response.data.success){
                             if(response.data.data.length>0){
@@ -277,7 +277,7 @@
             //退出登录
             loginout(){
                 var _this = this;
-                axios.get('/index.php/index/index/loginout', {})
+                axios.get('/index/index/loginout', {})
                     .then(function (response) {
                         if(response.data.success){
                             _this.$message({
@@ -285,7 +285,7 @@
                                 type: 'success'
                             });
                             setTimeout(()=>{
-                                window.location.href = '/index.php/index/index/login';
+                                window.location.href = '/index/index/login';
                             },1000);
                         }
                     })
@@ -343,7 +343,7 @@
             //新增项目名称
             commitProjectName(){
                 var _this = this;
-                axios.post('/index.php/index/index/addProject', {'title':_this.newProjectName},{
+                axios.post('/index/index/addProject', {'title':_this.newProjectName},{
                     headers:{'Content-Type':'application/json;charset=utf8'}
                 })
                     .then(function (response) {
@@ -371,7 +371,7 @@
             addnewtask(){
                 var _this = this;
                // console.log(_this.currentTask.projectId?_this.currentTask.projectId : _this.projectId);
-                axios.post('/index.php/index/index/addTask', {'taskName':_this.newTaskName,'projectId': _this.projectId},{
+                axios.post('/index/index/addTask', {'taskName':_this.newTaskName,'projectId': _this.projectId},{
                     headers:{'Content-Type':'application/json;charset=utf8'}
                 })
                     .then(function (response) {
@@ -396,7 +396,7 @@
             //编辑任务
             editTask(){
                 var _this = this;
-                axios.post('/index.php/index/index/addTaskcontent', {'id':_this.currentTask.id,'taskName':_this.currentTask.taskName,'taskContent':_this.currentTask.taskContent},{
+                axios.post('/index/index/addTaskcontent', {'id':_this.currentTask.id,'taskName':_this.currentTask.taskName,'taskContent':_this.currentTask.taskContent},{
                     headers:{'Content-Type':'application/json;charset=utf8'}
                 })
                     .then(function (response) {
@@ -419,7 +419,7 @@
             //删除任务
             deleteTask(id){
                 var _this = this;
-                axios.post('/index.php/index/index/deleteTask', {'id':id,},{
+                axios.post('/index/index/deleteTask', {'id':id,},{
                     headers:{'Content-Type':'application/json;charset=utf8'}
                 })
                     .then(function (response) {
@@ -444,7 +444,7 @@
             statusTask(task){
                 var _this = this;
                 console.log(task);
-                axios.post('/index.php/index/index/statusTask', {'id':task.id,'status':task.status},{
+                axios.post('/index/index/statusTask', {'id':task.id,'status':task.status},{
                     headers:{'Content-Type':'application/json;charset=utf8'}
                 })
                     .then(function (response) {

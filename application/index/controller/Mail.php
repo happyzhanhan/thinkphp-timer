@@ -17,13 +17,15 @@ class Mail
         dump('mail');
 
     }
+    // /index/Mail/email
     public function email()
     {
+        //dump(phpinfo());
         $mail = new PHPMailer();
 
         $mail->isSMTP();
         $mail->CharSet = "UTF-8";
-        $mail->addAddress('2792891492@qq.com','HAPPY');
+        $mail->addAddress('1659725767@qq.com','HAPPY');
         $mail->Body = "给您发送新的验证码:abc123";
         $mail->From = "happy2020mail@163.com";
         $mail->FromName = 'HAPPY NEWS';

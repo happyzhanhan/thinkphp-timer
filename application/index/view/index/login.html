@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" media="screen" href="__LOGIN__/css/style.css">
     <link rel="stylesheet" type="text/css" href="__LOGIN__/css/reset.css"/>
+
+    <!-- scripts -->
+    <script src="__LOGIN__/js/app.js"></script>
+    <script src="__LOGIN__/js/jquery.js"></script>
+    <script src="__LOGIN__/js/particles.min.js"></script>
 </head>
 <body>
 <div id="app">
@@ -32,16 +37,13 @@
             <div class="login-button" @click="commitLogin">
                 登录
             </div>
-            <div class="login-bottom"><a href="/index.php/index/index/register.html">注册</a> <a href="#">忘记密码？</a></div>
+            <div class="login-bottom"><a href="/index/index/register.html">注册</a> <a href="#">忘记密码？</a></div>
         </div>
         <div class="sk-rotating-plane" ></div>
     </div>
 </div>
-<!-- scripts -->
-<script src="__LOGIN__/js/particles.min.js"></script>
-<script src="__LOGIN__/js/app.js"></script>
 
-<script src="__STATIC__/js/jquery.js"></script>
+
 
 <script type="text/javascript">
     function hasClass(elem, cls) {
@@ -79,12 +81,12 @@
             };
             $.ajax({
                 type : "POST",
-                url : "/index.php/index/index/loginUser",
+                url : "/index/index/loginUser",
                 data : list,
                 success : function(result) {
                     // console.log(result);
                     if(result.success){
-                        window.location.href = '/index.php/index/index/index';
+                        window.location.href = '/index/index/index';
                     }else{
                         alert(result.msg);
                         removeClass(document.querySelector(".login"), "active")
@@ -113,12 +115,12 @@
         };
         $.ajax({
             type : "POST",
-            url : "/index.php/index/index/loginUser",
+            url : "/index/index/loginUser",
             data : list,
             success : function(result) {
                 // console.log(result);
                 if(result.success){
-                    window.location.href = '/index.php/index/index/index';
+                    window.location.href = '/index/index/index';
                 }else{
                     alert(result.msg);
                     removeClass(document.querySelector(".login"), "active")

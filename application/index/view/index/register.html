@@ -37,7 +37,7 @@
         <div class="login-button">
             注册
         </div>
-        <div class="login-bottom"><a href="/index.php/index/index/login.html">登录</a> <a href="#">忘记密码？</a></div>
+        <div class="login-bottom"><a href="/index/index/login.html">登录</a> <a href="#">忘记密码？</a></div>
     </div>
     <div class="sk-rotating-plane"></div>
 </div>
@@ -46,7 +46,8 @@
 <script src="__LOGIN__/js/particles.min.js"></script>
 <script src="__LOGIN__/js/app.js"></script>
 <!--<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>-->
-<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.10.2.min.js"></script>
+
 <script type="text/javascript">
 
     function hasClass(elem, cls) {
@@ -82,12 +83,12 @@
         };
         $.ajax({
             type : "POST",
-            url : "/index.php/index/index/adduser",
+            url : "/index/index/adduser",
             data : list,
             success : function(result) {
                // console.log(result);
                 if(result.success){
-                    window.location.href = '/index.php/index/index/login';
+                    window.location.href = '/index/index/login';
                 }else{
                     alert(result.msg);
                     removeClass(document.querySelector(".login"), "active")

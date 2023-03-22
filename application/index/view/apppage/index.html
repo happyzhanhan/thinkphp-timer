@@ -31,7 +31,7 @@
         <el-form-item label="图片">
 
             <el-upload
-                    action="/index.php/index/Apppage/addimg"
+                    action="/index/Apppage/addimg"
                     list-type="picture-card"
                     :file-list="fileList"
                     :on-success="handleAvatarSuccess"
@@ -95,13 +95,13 @@
 
 
                 var _this = this;
-                axios.post('/index.php/index/Apppage/addonedata', JSON.parse(JSON.stringify(this.form)),{
+                axios.post('/index/Apppage/addonedata', JSON.parse(JSON.stringify(this.form)),{
                     headers:{'Content-Type':'application/json;charset=utf8'}
                 })
                 .then(function (response) {
                     if(response.data.success){
                         _this.$message({message: response.data.msg,type: 'success'});
-                        window.open('/index.php/index/apppage/showlist.html','_self');
+                        window.open('/index/apppage/showlist.html','_self');
                     }else{
                         _this.$message({message: response.data.msg,type: 'error'});
                     }
@@ -112,7 +112,7 @@
                 });
             },
             backlist(){
-                window.open('/index.php/index/apppage/showlist.html','_self');
+                window.open('/index/apppage/showlist.html','_self');
             },
 
 
